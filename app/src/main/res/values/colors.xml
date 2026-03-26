@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!--    <color name="black">#FF000000</color>-->
+<!--    <color name="white">#FFFFFFFF</color>-->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#D89DC4FD</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!--    custom color-->
+    <color name="lite_sky">#9DC4FD</color>
+    <color name="text_color">#070707</color>
+    <color name="back_color">#FFFFFFFF</color>
+    <color name="orange">#C14242</color>
+    <color name="hot_pink">#F84F89</color>
+    <color name="off_white">#DBD8D8</color>
+    <color name="bottom_bar">#00BCD4</color>
+    <color name="green">#3FBC5E</color>
+    <color name="yellow">#FFC107</color>
+    <color name="red">#CD4035</color>
+    <color name="text">#333333</color>
 </resources>
