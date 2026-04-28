@@ -6,95 +6,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/register_back_gradient"
-    tools:context=".OpeningActivity">
+    tools:context=".LoginActivity">
 
+    <TextView
+        android:id="@+id/loginPageTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/berkshire_swash"
+        android:text="Login To Your Account"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:layout_marginTop="@dimen/_50sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/loginPageTitle">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="@dimen/_30sdp"
             android:layout_marginBottom="30dp"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/berkshire_swash"
-                android:text="@string/register_txt"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="30sp" />
 
             <EditText
-                android:id="@+id/regiName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="15dp"
-                android:backgroundTint="@color/white"
-                android:drawableStart="@drawable/account_icon"
-                android:fontFamily="@font/allerta"
-                android:hint="Enter Name"
-
-                android:inputType="text"
-                android:paddingStart="15dp"
-                android:paddingEnd="10dp"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="22sp" />
-
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="15dp"
-                android:backgroundTint="@color/white"
-                android:drawableStart="@android:drawable/ic_lock_idle_lock"
-                android:fontFamily="@font/allerta"
-                android:hint="Enter the password"
-
-                android:inputType="textPassword"
-                android:paddingStart="15dp"
-                android:paddingEnd="10dp"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="22sp" />
-            <EditText
-                android:id="@+id/reTypedPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="15dp"
-                android:backgroundTint="@color/white"
-                android:drawableStart="@android:drawable/ic_lock_idle_lock"
-                android:fontFamily="@font/allerta"
-                android:hint="Retype your passwore"
-
-                android:inputType="textPassword"
-                android:paddingStart="15dp"
-                android:paddingEnd="10dp"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="22sp" />
-
-
-            <EditText
-                android:id="@+id/regiEmail"
+                android:id="@+id/loginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -113,20 +57,21 @@
                 android:textSize="22sp" />
 
             <EditText
-                android:id="@+id/regiPhone"
+                android:id="@+id/loginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="15dp"
                 android:backgroundTint="@color/white"
-                android:drawableStart="@android:drawable/stat_sys_phone_call"
+                android:drawableStart="@android:drawable/ic_lock_idle_lock"
                 android:fontFamily="@font/allerta"
+                android:hint="Enter the password"
 
-                android:hint="Enter Phone number"
-                android:inputType="phone"
+                android:inputType="textPassword"
                 android:paddingStart="15dp"
                 android:paddingEnd="10dp"
+                android:singleLine="true"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="22sp" />
@@ -140,14 +85,14 @@
                 android:layout_marginEnd="6dp">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/registerBtn"
+                    android:id="@+id/loginBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_back"
                     android:fontFamily="@font/allerta"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:text="Register"
+                    android:text="Login"
                     android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                     android:textColor="@color/white"
                     android:textSize="24sp"
@@ -159,7 +104,7 @@
 
 
                 <ProgressBar
-                    android:id="@+id/regi_ac_progressBar"
+                    android:id="@+id/login_ac_progressBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
@@ -181,16 +126,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/allerta"
-                    android:text="If you already have an account, please "
+                    android:text="If you don't have an account, please  "
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/loginOption"
+                    android:id="@+id/regiAcOption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/allerta"
-                    android:text="@string/login_txt"
+                    android:text="@string/register_txt"
                     android:textColor="#709EFF"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -198,6 +143,5 @@
 
         </LinearLayout>
     </ScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

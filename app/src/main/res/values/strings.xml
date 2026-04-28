@@ -2,5 +2,5 @@
     <string name="app_name">MyTasks</string>
 
     <string name="register_txt"><u>Register here</u></string>
-    <string name="username_txt"><u>Username</u></string>
+    <string name="login_txt"><u>Login here</u></string>
 </resources>
