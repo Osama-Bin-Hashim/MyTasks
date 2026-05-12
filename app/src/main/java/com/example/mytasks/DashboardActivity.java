@@ -1,6 +1,5 @@
-package com.example.mytasks.Activities;
+package com.example.mytasks;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -9,15 +8,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.mytasks.DashboardActivity;
-import com.example.mytasks.databinding.ActivityMainBinding;
+import com.example.mytasks.databinding.ActivityDashboardBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity {
 
     // ---------------------------------------------------------------------------------------------
     // VIEW BINDING SECTION
     // ---------------------------------------------------------------------------------------------
-    private ActivityMainBinding binding;
+    private ActivityDashboardBinding binding;
     // ---------------------------------------------------------------------------------------------
 
     @Override
@@ -27,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         // -----------------------------------------------------------------------------------------
         // VIEW BINDING INITIALIZATION
         // -----------------------------------------------------------------------------------------
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         // -----------------------------------------------------------------------------------------
 
@@ -38,13 +36,5 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        // -----------------------------------------------------------------------------------------
-        // CLICK LISTENERS
-        // -----------------------------------------------------------------------------------------
-        binding.dashboardOption.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, DashboardActivity.class));
-        });
-        // -----------------------------------------------------------------------------------------
     }
 }
