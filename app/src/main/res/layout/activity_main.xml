@@ -18,6 +18,7 @@
         android:id="@+id/caption"
         app:cardElevation="12dp"
         android:layout_marginTop="@dimen/_20sdp"
+        android:backgroundTint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         >
