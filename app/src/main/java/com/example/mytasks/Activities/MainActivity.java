@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setupClickListeners();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         loadWorkspace();
     }
 
@@ -169,12 +174,24 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.addTask.setOnClickListener(v -> {
-            int selectedPosition = binding.projectSpinner.getSelectedItemPosition();
-            if (selectedPosition != AdapterView.INVALID_POSITION && !projectsList.isEmpty()) {
-                Project selected = projectsList.get(selectedPosition);
-                Intent intent = new Intent(this, com.example.mytasks.CreateTaskActivity.class);
-                intent.putExtra("PROJECT_ID", selected.id);
+            if (projectsList == null || projectsList.isEmpty()) {
+                // EMPTY STATE: Route to Project Creation
+                Intent intent = new Intent(MainActivity.this, CreateProjectActivity.class);
+                if (currentSessionUser != null) {
+                    intent.putExtra("USER_ID", currentSessionUser.id);
+                }
                 startActivity(intent);
+            } else {
+                // WORKING STATE: Fall back to current Manager-only Task Creation
+                int selectedPosition = binding.projectSpinner.getSelectedItemPosition();
+                if (selectedPosition != AdapterView.INVALID_POSITION) {
+                    Project selected = projectsList.get(selectedPosition);
+                    if (currentSessionUser != null && currentSessionUser.id == selected.managerId) {
+                        Intent intent = new Intent(this, com.example.mytasks.CreateTaskActivity.class);
+                        intent.putExtra("PROJECT_ID", selected.id);
+                        startActivity(intent);
+                    }
+                }
             }
         });
     }
