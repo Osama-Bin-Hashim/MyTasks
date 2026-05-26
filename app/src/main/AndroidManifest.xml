@@ -12,16 +12,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyTasks">
         <activity
-            android:name=".DashboardActivity"
-            android:exported="false" />
-        <activity
             android:name=".CreateTaskActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activities.ManagerPerformanceActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Activities.EmployeePerformanceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ManagerRequestsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.EmployeeRequestsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +35,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
         <activity
             android:name=".Activities.MainActivity"
             android:exported="false" />

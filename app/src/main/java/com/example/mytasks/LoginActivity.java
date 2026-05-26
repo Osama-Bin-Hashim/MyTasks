@@ -2,7 +2,8 @@ package com.example.mytasks;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,22 +11,64 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.mytasks.Activities.MainActivity;
+import com.example.mytasks.databinding.ActivityLoginBinding;
+
+import java.util.Objects;
+
 public class LoginActivity extends AppCompatActivity {
+
+    private ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_login);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        TextView registerOption = findViewById(R.id.registerOption);
-        registerOption.setOnClickListener(v -> {
+        binding.loginBtn.setOnClickListener(v -> handleLogin());
+
+        binding.registerOption.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+        });
+    }
+
+    private void handleLogin() {
+        String username = binding.loginEmail.getText().toString().trim();
+        String password = binding.loginPassword.getText().toString().trim();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        binding.loginBtn.setVisibility(View.GONE);
+        binding.loginAcProgressBar.setVisibility(View.VISIBLE);
+
+        AppDatabase db = AppDatabase.getInstance(this);
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            User user = db.userDao().getUserByUsername(username);
+
+            runOnUiThread(() -> {
+                binding.loginBtn.setVisibility(View.VISIBLE);
+                binding.loginAcProgressBar.setVisibility(View.GONE);
+
+                if (user != null && Objects.equals(user.password, password)) {
+                    Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Invalid credentials or user not found", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 }

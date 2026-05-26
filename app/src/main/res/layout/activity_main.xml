@@ -1,282 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/back_color"
-    android:layout_margin="@dimen/_20sdp"
-    android:id="@+id/main"
+    android:background="#F5F6FA"
     tools:context=".Activities.MainActivity">
 
+    <!-- TOP PROJECT SWITCHER CONTAINER -->
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:cardCornerRadius="10dp"
-        android:id="@+id/caption"
-        app:cardElevation="12dp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:backgroundTint="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            >
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/philosopher"
-                android:gravity="center"
-                android:text="Track Your Task Easily"
-                android:textColor="@color/text_color"
-                android:textSize="22dp"
-
-                />
-
-        </LinearLayout>
-
-
-    </androidx.cardview.widget.CardView>
-
-
-    <ScrollView
-        android:id="@+id/scr"
-        android:layout_marginTop="50dp"
+        android:id="@+id/projectCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/caption"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        >
+        android:layout_margin="@dimen/_16sdp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="@dimen/_16sdp"
+        app:cardElevation="@dimen/_12sdp"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
             android:orientation="vertical"
-            >
+            android:padding="@dimen/_12sdp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:weightSum="2"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/title">
+                android:text="Select Project Workspace"
+                android:textColor="#808080"
+                android:textSize="@dimen/_12ssp" />
 
-                <androidx.cardview.widget.CardView
-
-                    android:layout_weight="1"
-                    android:id="@+id/todo_option"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_margin="8dp"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="12sp"
-                    app:cardElevation="12dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:layout_margin="@dimen/_3sdp"
-                        android:background="@color/back_color"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="140dp"
-                            android:layout_height="120dp"
-                            android:paddingStart="8dp"
-                            android:paddingEnd="8dp"
-                            android:paddingBottom="25dp"
-                            android:src="@drawable/todo" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="TODOs"
-                            android:layout_marginTop="-10dp"
-                            android:textColor="@color/text_color"
-                            android:textSize="18dp"
-                            android:textStyle="bold" />
-
-
-                    </LinearLayout>
-
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/notices_option"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_margin="8dp"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="12sp"
-                    android:layout_weight="1"
-                    app:cardElevation="12dp">
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:layout_margin="@dimen/_3sdp"
-                        android:background="@color/back_color"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="140dp"
-                            android:layout_height="120dp"
-                            android:paddingStart="8dp"
-                            android:paddingEnd="8dp"
-                            android:src="@drawable/list" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingBottom="@dimen/_2sdp"
-                            android:text="Notices"
-                            android:textColor="@color/text_color"
-                            android:textSize="18dp"
-                            android:textStyle="bold" />
-
-
-                    </LinearLayout>
-
-
-                </androidx.cardview.widget.CardView>
-
-
-            </LinearLayout>
-
-
-
-            <LinearLayout
+            <Spinner
+                android:id="@+id/projectSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:weightSum="2"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/title">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_weight="1"
-                    android:id="@+id/dashboard_option"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_margin="8dp"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="12sp"
-                    app:cardElevation="12dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:layout_margin="@dimen/_3sdp"
-                        android:background="@color/back_color"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="140dp"
-                            android:layout_height="120dp"
-                            android:paddingStart="8dp"
-                            android:paddingEnd="8dp"
-                            android:paddingBottom="25dp"
-                            android:src="@drawable/dashboard" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Dashboard"
-                            android:layout_marginTop="-10dp"
-                            android:textColor="@color/black"
-                            android:textSize="18dp"
-                            android:textStyle="bold" />
-
-
-                    </LinearLayout>
-
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/quiz"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_margin="8dp"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="12sp"
-                    android:layout_weight="1"
-                    app:cardElevation="12dp">
-
-
-                    <LinearLayout
-                        android:id="@+id/request_option"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="140dp"
-                            android:layout_height="120dp"
-                            android:padding="8dp"
-
-                            android:src="@drawable/list" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:text="Requests"
-                            android:textColor="@color/black"
-                            android:textSize="18dp"
-                            android:textStyle="bold" />
-
-
-                    </LinearLayout>
-
-
-                </androidx.cardview.widget.CardView>
-
-
-
-            </LinearLayout>
-
-
-
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_8sdp" />
         </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
+    <!-- GRID MENU CONTAINER -->
+    <GridLayout
+        android:id="@+id/menuGrid"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/_8sdp"
+        android:alignmentMode="alignMargins"
+        android:columnCount="2"
+        android:columnOrderPreserved="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/projectCard">
 
-    </ScrollView>
+        <!-- TODOs -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/todo_option"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="@dimen/_8sdp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="@dimen/_16sdp"
+            app:cardElevation="@dimen/_12sdp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:src="@drawable/todo" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="TODOs"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/_14ssp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
+        <!-- Notices -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/notices_option"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="@dimen/_8sdp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="@dimen/_16sdp"
+            app:cardElevation="@dimen/_12sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:src="@drawable/list" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="Notices"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/_14ssp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Performance -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/dashboard_option"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="@dimen/_8sdp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="@dimen/_16sdp"
+            app:cardElevation="@dimen/_12sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:src="@drawable/dashboard" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="Performance"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/_14ssp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Requests -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardRequests"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="@dimen/_8sdp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="@dimen/_16sdp"
+            app:cardElevation="@dimen/_12sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:src="@drawable/list" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="Requests"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/_14ssp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </GridLayout>
+
+    <!-- EMPTY STATE CONTAINER -->
+    <LinearLayout
+        android:id="@+id/emptyStateContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/_24sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:alpha="0.3"
+            android:src="@drawable/dashboard" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:gravity="center"
+            android:text="No Projects Found.\nTap '+' to create your first workspace."
+            android:textColor="#666666"
+            android:textSize="@dimen/_16ssp" />
+    </LinearLayout>
+
+    <!-- FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_16sdp"
-        android:contentDescription="Add New Item"
+        android:layout_margin="@dimen/_24sdp"
+        android:contentDescription="Add Action"
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="@color/black"
-        app:tint="@android:color/white"
+        app:backgroundTint="#333333"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:tint="#FFFFFF" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

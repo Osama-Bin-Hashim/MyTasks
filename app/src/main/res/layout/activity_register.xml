@@ -54,46 +54,6 @@
                 android:textSize="22sp" />
 
             <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="15dp"
-                android:backgroundTint="@color/white"
-                android:drawableStart="@android:drawable/ic_lock_idle_lock"
-                android:fontFamily="@font/allerta"
-                android:hint="Enter the password"
-
-                android:inputType="textPassword"
-                android:paddingStart="15dp"
-                android:paddingEnd="10dp"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="22sp" />
-            <EditText
-                android:id="@+id/reTypedPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="15dp"
-                android:backgroundTint="@color/white"
-                android:drawableStart="@android:drawable/ic_lock_idle_lock"
-                android:fontFamily="@font/allerta"
-                android:hint="Retype your passwore"
-
-                android:inputType="textPassword"
-                android:paddingStart="15dp"
-                android:paddingEnd="10dp"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="22sp" />
-
-
-            <EditText
                 android:id="@+id/regiEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,21 +72,41 @@
                 android:textColorHint="@color/white"
                 android:textSize="22sp" />
 
+
             <EditText
-                android:id="@+id/regiPhone"
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="15dp"
                 android:backgroundTint="@color/white"
-                android:drawableStart="@android:drawable/stat_sys_phone_call"
+                android:drawableStart="@android:drawable/ic_lock_idle_lock"
                 android:fontFamily="@font/allerta"
-
-                android:hint="Enter Phone number"
-                android:inputType="phone"
+                android:hint="Enter the password"
+                android:inputType="textPassword"
                 android:paddingStart="15dp"
                 android:paddingEnd="10dp"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="22sp" />
+
+            <EditText
+                android:id="@+id/reTypedPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
+                android:backgroundTint="@color/white"
+                android:drawableStart="@android:drawable/ic_lock_idle_lock"
+                android:fontFamily="@font/allerta"
+                android:hint="Retype your password"
+                android:inputType="textPassword"
+                android:paddingStart="15dp"
+                android:paddingEnd="10dp"
+                android:singleLine="true"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="22sp" />

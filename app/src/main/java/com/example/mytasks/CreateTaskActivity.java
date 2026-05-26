@@ -14,28 +14,41 @@ public class CreateTaskActivity extends AppCompatActivity {
         binding = ActivityCreateTaskBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        int projectId = getIntent().getIntExtra("PROJECT_ID", -1);
+
         binding.btnSaveTask.setOnClickListener(v -> {
-            // Logic to save task to Room would go here
-            saveTaskToDatabase();
+            saveTaskToDatabase(projectId);
         });
     }
 
-    private void saveTaskToDatabase() {
-        String title = binding.etTaskTitle.getText().toString();
+    private void saveTaskToDatabase(int projectId) {
+        String title = binding.etTaskTitle.getText().toString().trim();
         if (title.isEmpty()) {
             Toast.makeText(this, "Title is required", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        if (projectId == -1) {
+            Toast.makeText(this, "Invalid Project Context", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Task newTask = new Task();
+        newTask.projectId = projectId;
         newTask.title = title;
         newTask.description = binding.etTaskDesc.getText().toString();
         newTask.status = "PENDING";
         newTask.priority = 2; // Default to High
 
-        AppDatabase.getInstance(this).taskDao().updateTask(newTask); // Using update as a generic save for now
-        
-        Toast.makeText(this, "Task Created!", Toast.LENGTH_SHORT).show();
-        finish();
+        AppDatabase db = AppDatabase.getInstance(this);
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            // FIX: Using insertTask instead of updateTask for new records
+            db.taskDao().insertTask(newTask);
+            
+            runOnUiThread(() -> {
+                Toast.makeText(CreateTaskActivity.this, "Task Created Successfully!", Toast.LENGTH_SHORT).show();
+                finish();
+            });
+        });
     }
 }
