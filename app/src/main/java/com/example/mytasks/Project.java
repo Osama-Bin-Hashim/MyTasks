@@ -14,6 +14,7 @@ public class Project {
 
     public String name;
     public int managerId; // References User.id
+    public String projectRoster = ""; // Comma-separated usernames
 
     public Project() {}
 

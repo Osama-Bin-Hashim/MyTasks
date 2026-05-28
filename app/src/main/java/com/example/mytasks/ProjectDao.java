@@ -11,6 +11,9 @@ public interface ProjectDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     void insertProject(Project project);
 
+    @androidx.room.Update
+    void updateProject(Project project);
+
     @Query("SELECT * FROM projects")
     List<Project> getAllProjects();
 

@@ -1,117 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:background="#F5F6FA"
-    android:padding="@dimen/_24sdp">
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/tvMgrPerfTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Project Analytics"
-        android:textColor="#333333"
-        android:textSize="@dimen/_22ssp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/globalStatsCard"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_24sdp"
-        app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="@dimen/_12sdp"
-        app:cardElevation="@dimen/_8sdp"
-        app:layout_constraintTop_toBottomOf="@id/tvMgrPerfTitle">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_124sdp"
+        android:layout_marginBottom="@dimen/_50sdp">
 
-        <LinearLayout
+        <!-- HEADER: Project Progress -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/globalStatsCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/_20sdp">
+            android:layout_margin="@dimen/_16sdp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="@dimen/_16sdp"
+            app:cardElevation="@dimen/_4sdp">
 
-            <TextView
-                android:id="@+id/tvGlobalProgress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Global Progress: --%"
-                android:textColor="#333333"
-                android:textSize="@dimen/_20ssp"
-                android:textStyle="bold" />
-
-            <ProgressBar
-                android:id="@+id/pbGlobalProgress"
-                style="?android:attr/progressBarStyleHorizontal"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:max="100"
-                android:progress="0"
-                android:progressTint="#333333" />
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/_20sdp">
 
-            <TextView
-                android:id="@+id/tvTaskSummary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:text="Total Active: -- | Total Closed: --"
-                android:textColor="#666666"
-                android:textSize="@dimen/_12ssp" />
+                <TextView
+                    android:id="@+id/tvMgrPerfTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Project Analytics"
+                    android:textColor="#808080"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold" />
 
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/tvGlobalProgress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="0%"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/_32ssp"
+                    android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvLeaderboardTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_32sdp"
-        android:text="Leaderboard"
-        android:textColor="#333333"
-        android:textSize="@dimen/_16ssp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/globalStatsCard" />
+                <ProgressBar
+                    android:id="@+id/pbGlobalProgress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:max="100"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/custom_progress_bar" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/leaderboardCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_12sdp"
-        app:cardBackgroundColor="#333333"
-        app:cardCornerRadius="@dimen/_12sdp"
-        app:cardElevation="@dimen/_4sdp"
-        app:layout_constraintTop_toBottomOf="@id/tvLeaderboardTitle">
+                <TextView
+                    android:id="@+id/tvTaskSummary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:text="Active: 0 | Closed: 0"
+                    android:textColor="#666666"
+                    android:textSize="@dimen/_12ssp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-        <LinearLayout
+        <!-- SECTION TITLE: Team Performance -->
+        <TextView
+            android:id="@+id/tvTeamTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:text="Team Performance"
+            android:textColor="#333333"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold" />
+
+        <!-- ROSTER LIST -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRosterPerformance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/_16sdp">
+            android:layout_marginHorizontal="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:nestedScrollingEnabled="false"
+            tools:listitem="@layout/item_roster_performance" />
 
-            <TextView
-                android:id="@+id/tvTopContributor"
-                android:layout_width="wrap_content"
+        <!-- ACTION SHEET: Enroll Member -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/enrollmentFormCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="@dimen/_16sdp"
+            app:cardElevation="@dimen/_12sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Top Contributor: --"
-                android:textColor="#FFFFFF"
-                android:textSize="@dimen/_14ssp"
-                android:textStyle="bold" />
+                android:orientation="vertical"
+                android:padding="@dimen/_16sdp">
 
-            <TextView
-                android:id="@+id/tvTopContributorStats"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:text="Tasks Completed: --"
-                android:textColor="#CCCCCC"
-                android:textSize="@dimen/_12ssp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Enroll New Member"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold" />
 
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <EditText
+                        android:id="@+id/inputNewMemberUsername"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_bg"
+                        android:hint="Enter colleague's username"
+                        android:inputType="text"
+                        android:paddingHorizontal="@dimen/_12sdp"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/_12ssp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnAddMemberToProject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:background="#333333"
+                        android:paddingHorizontal="@dimen/_16sdp"
+                        android:text="+ Add to Project"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Hidden legacy view for code compatibility -->
+                <TextView
+                    android:id="@+id/tvRosterList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_100sdp"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

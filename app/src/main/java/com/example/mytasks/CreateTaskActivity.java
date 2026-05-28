@@ -47,7 +47,7 @@ public class CreateTaskActivity extends AppCompatActivity {
         }
 
         setupPrioritySpinner();
-        loadUsers();
+        loadRosterUsers(projectId);
         setupDeadlinePicker();
 
         if (isEditMode) {
@@ -70,10 +70,24 @@ public class CreateTaskActivity extends AppCompatActivity {
         binding.spinnerPriority.setAdapter(adapter);
     }
 
-    private void loadUsers() {
+    private void loadRosterUsers(int projectId) {
         AppDatabase db = AppDatabase.getInstance(this);
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            userList = db.userDao().getAllUsers();
+            Project project = db.projectDao().getProjectById(projectId);
+            if (project == null) return;
+
+            String roster = project.projectRoster;
+            if (roster == null || roster.isEmpty()) {
+                runOnUiThread(() -> Toast.makeText(this, "No team members enrolled in this project", Toast.LENGTH_LONG).show());
+                return;
+            }
+
+            String[] memberNames = roster.split(", ");
+            userList = new ArrayList<>();
+            for (String name : memberNames) {
+                userList.add(new User(name)); // Minimal User object for UI mapping
+            }
+
             checkedUsers = new boolean[userList.size()];
             
             if (isEditMode && existingTask != null) {
@@ -121,7 +135,7 @@ public class CreateTaskActivity extends AppCompatActivity {
 
     private void showUserSelectionDialog() {
         if (userList.isEmpty()) {
-            Toast.makeText(this, "No users to select", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No team members to select", Toast.LENGTH_SHORT).show();
             return;
         }
 
