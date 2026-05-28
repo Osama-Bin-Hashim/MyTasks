@@ -39,6 +39,9 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.TodoWorkspaceActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.CreateProjectActivity"
             android:exported="false" />
         <activity

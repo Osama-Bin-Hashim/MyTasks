@@ -12,7 +12,7 @@ public class Task {
     public int id;
 
     public int projectId;   // References Project.id
-    public int assigneeId;  // References User.id
+    public String assigneeId;  // Stores comma-separated Team Member names
 
     public String title;
     public String description;

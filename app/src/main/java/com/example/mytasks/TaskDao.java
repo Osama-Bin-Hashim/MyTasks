@@ -19,12 +19,33 @@ public interface TaskDao {
     @Update
     void updateTask(Task task);
 
+    @androidx.room.Delete
+    void deleteTask(Task task);
+
+    @Query("SELECT * FROM tasks WHERE id = :taskId")
+    Task getTaskById(int taskId);
+
     @Query("SELECT * FROM tasks WHERE projectId = :projectId")
     List<Task> getTasksByProject(int projectId);
 
-    @Query("SELECT * FROM tasks WHERE assigneeId = :employeeId")
-    List<Task> getTasksByAssignee(int employeeId);
+    @Query("SELECT * FROM tasks WHERE projectId = :projectId ORDER BY priority ASC")
+    List<Task> getTasksByProjectSorted(int projectId);
+
+    @Query("SELECT * FROM tasks WHERE assigneeId LIKE '%' || :employeeName || '%'")
+    List<Task> getTasksByAssignee(String employeeName);
 
     @Query("SELECT * FROM tasks WHERE status = :status")
     List<Task> getTasksByStatus(String status);
+
+    @Query("SELECT COUNT(*) FROM tasks WHERE projectId = :projId")
+    int getTaskCountByProject(int projId);
+
+    @Query("SELECT COUNT(*) FROM tasks WHERE projectId = :projId AND status = 'DONE'")
+    int getCompletedTaskCountByProject(int projId);
+
+    @Query("SELECT COUNT(*) FROM tasks WHERE projectId = :projId AND assigneeId LIKE '%' || :username || '%'")
+    int getEmployeeTaskCount(int projId, String username);
+
+    @Query("SELECT COUNT(*) FROM tasks WHERE projectId = :projId AND assigneeId LIKE '%' || :username || '%' AND status = 'DONE'")
+    int getEmployeeCompletedTaskCount(int projId, String username);
 }

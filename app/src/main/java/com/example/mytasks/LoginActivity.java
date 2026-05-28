@@ -61,6 +61,13 @@ public class LoginActivity extends AppCompatActivity {
                 binding.loginAcProgressBar.setVisibility(View.GONE);
 
                 if (user != null && Objects.equals(user.password, password)) {
+                    // SAVE SESSION
+                    getSharedPreferences("UserSession", MODE_PRIVATE)
+                            .edit()
+                            .putInt("LOGGED_IN_USER_ID", user.id)
+                            .putString("LOGGED_IN_USERNAME", user.username)
+                            .apply();
+
                     Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);

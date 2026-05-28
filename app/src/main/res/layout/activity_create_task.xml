@@ -1,42 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp"
-    android:background="@color/back_color">
+    android:background="#F5F6FA"
+    android:padding="@dimen/_20sdp"
+    tools:context=".CreateTaskActivity">
 
     <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create New Task"
-        android:textSize="24sp"
+        android:textColor="#333333"
+        android:textSize="@dimen/_22ssp"
         android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_marginBottom="20dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/etTaskTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@drawable/edittext_bg"
         android:hint="Task Title"
-        android:layout_marginBottom="15dp"/>
+        android:paddingHorizontal="@dimen/_12sdp"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
     <EditText
         android:id="@+id/etTaskDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Task Description"
-        android:lines="4"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@drawable/edittext_bg"
         android:gravity="top"
-        android:layout_marginBottom="20dp"/>
+        android:hint="Task Description"
+        android:lines="3"
+        android:padding="@dimen/_12sdp"
+        app:layout_constraintTop_toBottomOf="@id/etTaskTitle" />
 
-    <Button
+    <!-- METRICS SECTION -->
+    <TextView
+        android:id="@+id/tvMetricsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Task Metrics"
+        android:textColor="#808080"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etTaskDesc" />
+
+    <TextView
+        android:id="@+id/tvAssigneeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:text="Assign To:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMetricsLabel" />
+
+    <TextView
+        android:id="@+id/tvSelectAssignees"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:background="@drawable/edittext_bg"
+        android:gravity="center_vertical"
+        android:hint="Select Team Members"
+        android:paddingHorizontal="@dimen/_12sdp"
+        android:textColor="#333333"
+        android:ellipsize="end"
+        android:singleLine="true"
+        app:layout_constraintBottom_toBottomOf="@id/tvAssigneeLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvAssigneeLabel"
+        app:layout_constraintTop_toTopOf="@id/tvAssigneeLabel" />
+
+    <TextView
+        android:id="@+id/tvPriorityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:text="Priority:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSelectAssignees" />
+
+    <Spinner
+        android:id="@+id/spinnerPriority"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvPriorityLabel"
+        app:layout_constraintTop_toTopOf="@id/tvPriorityLabel"
+        app:layout_constraintBottom_toBottomOf="@id/tvPriorityLabel"/>
+
+    <TextView
+        android:id="@+id/tvTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:text="Task Deadline:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinnerPriority" />
+
+    <TextView
+        android:id="@+id/tvTaskDeadline"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:background="@drawable/edittext_bg"
+        android:gravity="center_vertical"
+        android:hint="Select Deadline Date &amp; Time"
+        android:paddingHorizontal="@dimen/_12sdp"
+        android:textColor="#333333"
+        app:layout_constraintBottom_toBottomOf="@id/tvTimeLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvTimeLabel"
+        app:layout_constraintTop_toTopOf="@id/tvTimeLabel" />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSaveTask"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_48sdp"
+        android:layout_marginTop="@dimen/_32sdp"
+        android:background="#333333"
         android:text="Save Task"
-        android:backgroundTint="@color/black"
-        android:textColor="@android:color/white"/>
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/tvTaskDeadline" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
