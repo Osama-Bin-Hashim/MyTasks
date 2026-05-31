@@ -24,6 +24,7 @@ public class Task {
     public long timeLimitMillis;
     public long timeTakenMillis;
     public boolean canShareNotes;
+    public boolean isRead = true; // New field for notifications
 
     public Task() {}
 }

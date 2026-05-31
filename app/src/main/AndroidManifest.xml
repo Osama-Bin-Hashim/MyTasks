@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,15 +18,13 @@
             android:exported="false" />
         <activity
             android:name=".Activities.ManagerPerformanceActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Activities.EmployeePerformanceActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.ManagerRequestsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.EmployeeRequestsActivity"
+            android:name=".Activities.RequestsActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
@@ -37,6 +37,9 @@
         </activity>
         <activity
             android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.NoticeBoardActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.TodoWorkspaceActivity"

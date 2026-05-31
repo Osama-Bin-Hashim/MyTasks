@@ -1,109 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:background="#F5F6FA"
-    android:fillViewport="true">
+    android:fitsSystemWindows="true">
 
+    <!-- DYNAMIC HEADER: User Greeting -->
+    <TextView
+        android:id="@+id/tvDashboardTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:text="Dashboard: User"
+        android:textColor="#333333"
+        android:textSize="@dimen/_18ssp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- HEADER: Project Progress -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/globalStatsCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="@dimen/_16sdp"
+        app:cardElevation="@dimen/_4sdp"
+        app:layout_constraintTop_toBottomOf="@id/tvDashboardTitle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/_20sdp">
+
+            <TextView
+                android:id="@+id/tvMgrPerfTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Project Analytics"
+                android:textColor="#808080"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvGlobalProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="0%"
+                android:textColor="#333333"
+                android:textSize="@dimen/_32ssp"
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/pbGlobalProgress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/custom_progress_bar" />
+
+            <TextView
+                android:id="@+id/tvTaskSummary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:text="Active: 0 | Closed: 0"
+                android:textColor="#666666"
+                android:textSize="@dimen/_12ssp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- SECTION TITLE: Team Performance -->
+    <TextView
+        android:id="@+id/tvTeamTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:text="Team Performance"
+        android:textColor="#333333"
+        android:textSize="@dimen/_14ssp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/globalStatsCard" />
+
+    <!-- ROSTER LIST -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRosterPerformance"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/_16sdp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomFormContainer"
+        app:layout_constraintTop_toBottomOf="@id/tvTeamTitle"
+        tools:listitem="@layout/item_roster_performance" />
+
+    <!-- PINNED ACTION SHEET CONTAINER -->
     <LinearLayout
+        android:id="@+id/bottomFormContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/_124sdp"
-        android:layout_marginBottom="@dimen/_50sdp">
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- HEADER: Project Progress -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/globalStatsCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_16sdp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="@dimen/_16sdp"
-            app:cardElevation="@dimen/_4sdp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="@dimen/_20sdp">
-
-                <TextView
-                    android:id="@+id/tvMgrPerfTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Project Analytics"
-                    android:textColor="#808080"
-                    android:textSize="@dimen/_12ssp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvGlobalProgress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:text="0%"
-                    android:textColor="#333333"
-                    android:textSize="@dimen/_32ssp"
-                    android:textStyle="bold" />
-
-                <ProgressBar
-                    android:id="@+id/pbGlobalProgress"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:max="100"
-                    android:progress="0"
-                    android:progressDrawable="@drawable/custom_progress_bar" />
-
-                <TextView
-                    android:id="@+id/tvTaskSummary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:text="Active: 0 | Closed: 0"
-                    android:textColor="#666666"
-                    android:textSize="@dimen/_12ssp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- SECTION TITLE: Team Performance -->
-        <TextView
-            android:id="@+id/tvTeamTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:text="Team Performance"
-            android:textColor="#333333"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold" />
-
-        <!-- ROSTER LIST -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvRosterPerformance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:nestedScrollingEnabled="false"
-            tools:listitem="@layout/item_roster_performance" />
-
-        <!-- ACTION SHEET: Enroll Member -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/enrollmentFormCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_24sdp"
-            android:layout_marginHorizontal="@dimen/_16sdp"
             app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="@dimen/_16sdp"
-            app:cardElevation="@dimen/_12sdp">
+            app:cardElevation="@dimen/_12sdp"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.TopRounded">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -161,11 +178,6 @@
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_100sdp"/>
-
     </LinearLayout>
 
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

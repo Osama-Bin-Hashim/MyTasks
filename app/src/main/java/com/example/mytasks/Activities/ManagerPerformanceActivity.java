@@ -1,6 +1,8 @@
 package com.example.mytasks.Activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,13 +20,16 @@ import com.example.mytasks.Task;
 import com.example.mytasks.User;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class ManagerPerformanceActivity extends AppCompatActivity {
+public class ManagerPerformanceActivity extends AppCompatActivity implements RosterAdapter.OnRemoveMemberListener {
     
     private int activeProjectId;
     private Project activeProject;
     private RosterAdapter rosterAdapter;
+    private boolean isManager;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +37,7 @@ public class ManagerPerformanceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manager_performance);
 
         // SECURITY SHIELD
-        boolean isManager = getIntent().getBooleanExtra("IS_MANAGER", false);
+        isManager = getIntent().getBooleanExtra("IS_MANAGER", false);
         if (!isManager) {
             Toast.makeText(this, "Access Denied: Managers Only.", Toast.LENGTH_SHORT).show();
             finish();
@@ -41,6 +46,16 @@ public class ManagerPerformanceActivity extends AppCompatActivity {
 
         activeProjectId = getIntent().getIntExtra("PROJECT_ID", -1);
         
+        // PERSISTENT USER GREETING
+        SharedPreferences pref = getSharedPreferences("UserSession", MODE_PRIVATE);
+        String currentSessionUsername = pref.getString("LOGGED_IN_USERNAME", "User");
+        int currentUserId = pref.getInt("LOGGED_IN_USER_ID", -1);
+        ((TextView)findViewById(R.id.tvDashboardTitle)).setText("Dashboard: " + currentSessionUsername);
+
+        if (currentUserId != -1) {
+            pref.edit().putLong("LAST_PERFORMANCE_VIEW_" + currentUserId + "_" + activeProjectId, System.currentTimeMillis()).apply();
+        }
+
         setupRecyclerView();
         loadProjectAnalytics(activeProjectId);
         setupRosterEnrollment();
@@ -48,9 +63,53 @@ public class ManagerPerformanceActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         RecyclerView rv = findViewById(R.id.rvRosterPerformance);
-        rosterAdapter = new RosterAdapter();
+        rosterAdapter = new RosterAdapter(isManager, this);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(rosterAdapter);
+    }
+
+    @Override
+    public void onRemoveMember(String username) {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Remove Member")
+                .setMessage("Are you sure you want to remove " + username + " from this project? This will also unassign them from all tasks.")
+                .setPositiveButton("Remove", (dialog, which) -> executeMemberRemoval(username))
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void executeMemberRemoval(String username) {
+        AppDatabase db = AppDatabase.getInstance(this);
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            if (activeProject != null && activeProject.projectRoster != null) {
+                // SECURITY_AUDIT
+                SharedPreferences pref = getSharedPreferences("UserSession", MODE_PRIVATE);
+                String managerName = pref.getString("LOGGED_IN_USERNAME", "Unknown");
+                Log.d("SECURITY_AUDIT", "Manager " + managerName + " removing user " + username + " from Project ID: " + activeProjectId);
+
+                // 1. Remove from Roster
+                List<String> rosterList = new ArrayList<>(Arrays.asList(activeProject.projectRoster.split(", ")));
+                rosterList.remove(username);
+                activeProject.projectRoster = String.join(", ", rosterList);
+                db.projectDao().updateProject(activeProject);
+
+                // 2. Unassign from Tasks
+                List<Task> tasks = db.taskDao().getTasksByProject(activeProjectId);
+                for (Task task : tasks) {
+                    if (task.assigneeId != null && task.assigneeId.contains(username)) {
+                        List<String> assignees = new ArrayList<>(Arrays.asList(task.assigneeId.split(", ")));
+                        assignees.remove(username);
+                        task.assigneeId = String.join(", ", assignees);
+                        db.taskDao().updateTask(task);
+                    }
+                }
+
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Employee removed successfully", Toast.LENGTH_SHORT).show();
+                    loadProjectAnalytics(activeProjectId);
+                });
+            }
+        });
     }
 
     private void loadProjectAnalytics(int projectId) {

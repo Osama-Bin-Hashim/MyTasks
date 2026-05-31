@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.mytasks.Adapters.TaskAdapter;
 import com.example.mytasks.AppDatabase;
+import com.example.mytasks.NotificationHelper;
 import com.example.mytasks.Project;
 import com.example.mytasks.Task;
 import com.example.mytasks.databinding.ActivityTodoWorkspaceBinding;
@@ -43,7 +44,18 @@ public class TodoWorkspaceActivity extends AppCompatActivity implements TaskAdap
         isManager = getIntent().getBooleanExtra("IS_MANAGER", false);
         currentUsername = getIntent().getStringExtra("LOGGED_IN_USERNAME");
         
+        if (!isManager) {
+            markTasksAsRead();
+        }
+        
         loadInitialData();
+    }
+
+    private void markTasksAsRead() {
+        AppDatabase db = AppDatabase.getInstance(this);
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            db.taskDao().markTasksAsRead(projectId, currentUsername);
+        });
     }
 
     private void loadInitialData() {
@@ -84,6 +96,8 @@ public class TodoWorkspaceActivity extends AppCompatActivity implements TaskAdap
             runOnUiThread(() -> {
                 adapter.setTasks(updatedTasks);
                 Toast.makeText(this, "Task marked as DONE", Toast.LENGTH_SHORT).show();
+                NotificationHelper.showNotification(this, "Task Completed!", 
+                    currentUsername + " finished: " + task.title);
             });
         });
     }

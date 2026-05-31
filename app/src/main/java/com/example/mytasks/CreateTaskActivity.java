@@ -233,7 +233,14 @@ public class CreateTaskActivity extends AppCompatActivity {
             if (isEditMode) {
                 db.taskDao().updateTask(taskToSave);
             } else {
+                taskToSave.isRead = false; // Mark as unread for assignee
                 db.taskDao().insertTask(taskToSave);
+                
+                // Fire local notification (mocking real-time for same-device demo)
+                runOnUiThread(() -> {
+                    NotificationHelper.showNotification(this, "New Task Assigned!", 
+                        "You have been assigned: " + taskToSave.title);
+                });
             }
             runOnUiThread(() -> {
                 Toast.makeText(CreateTaskActivity.this, 

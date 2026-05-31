@@ -23,6 +23,15 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // SESSION PERSISTENCE: Check for existing login
+        android.content.SharedPreferences pref = getSharedPreferences("UserSession", MODE_PRIVATE);
+        if (pref.getInt("LOGGED_IN_USER_ID", -1) != -1) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
+        }
+
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

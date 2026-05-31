@@ -17,6 +17,17 @@ import java.util.List;
 public class RosterAdapter extends RecyclerView.Adapter<RosterAdapter.RosterViewHolder> {
 
     private List<RosterStats> rosterStatsList = new ArrayList<>();
+    private final boolean isManager;
+    private final OnRemoveMemberListener listener;
+
+    public interface OnRemoveMemberListener {
+        void onRemoveMember(String username);
+    }
+
+    public RosterAdapter(boolean isManager, OnRemoveMemberListener listener) {
+        this.isManager = isManager;
+        this.listener = listener;
+    }
 
     public void setRosterStatsList(List<RosterStats> rosterStatsList) {
         this.rosterStatsList = rosterStatsList;
@@ -33,7 +44,7 @@ public class RosterAdapter extends RecyclerView.Adapter<RosterAdapter.RosterView
     @Override
     public void onBindViewHolder(@NonNull RosterViewHolder holder, int position) {
         RosterStats stats = rosterStatsList.get(position);
-        holder.bind(stats);
+        holder.bind(stats, isManager, listener);
     }
 
     @Override
@@ -43,15 +54,17 @@ public class RosterAdapter extends RecyclerView.Adapter<RosterAdapter.RosterView
 
     static class RosterViewHolder extends RecyclerView.ViewHolder {
         TextView tvUsername, tvTaskRatio, tvPercentage;
+        View btnRemove;
 
         public RosterViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUsername = itemView.findViewById(R.id.tvRosterUsername);
             tvTaskRatio = itemView.findViewById(R.id.tvRosterTaskRatio);
             tvPercentage = itemView.findViewById(R.id.tvRosterPercentage);
+            btnRemove = itemView.findViewById(R.id.btnRemoveMember);
         }
 
-        public void bind(RosterStats stats) {
+        public void bind(RosterStats stats, boolean isManager, OnRemoveMemberListener listener) {
             tvUsername.setText(stats.username);
             
             if (stats.totalTasks == 0) {
@@ -60,6 +73,13 @@ public class RosterAdapter extends RecyclerView.Adapter<RosterAdapter.RosterView
             } else {
                 tvTaskRatio.setText("Tasks: " + stats.completedTasks + " / " + stats.totalTasks + " Completed");
                 tvPercentage.setText(stats.percentage + "%");
+            }
+
+            if (isManager) {
+                btnRemove.setVisibility(View.VISIBLE);
+                btnRemove.setOnClickListener(v -> listener.onRemoveMember(stats.username));
+            } else {
+                btnRemove.setVisibility(View.GONE);
             }
         }
     }

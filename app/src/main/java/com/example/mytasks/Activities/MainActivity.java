@@ -68,6 +68,47 @@ public class MainActivity extends AppCompatActivity {
         loadWorkspace();
     }
 
+    private void updateNotificationBadges(int projectId) {
+        AppDatabase db = AppDatabase.getInstance(this);
+        SharedPreferences pref = getSharedPreferences("UserSession", MODE_PRIVATE);
+        long lastNoticeView = pref.getLong("LAST_NOTICE_VIEW_" + currentSessionUserId + "_" + projectId, 0);
+        long lastPerformanceView = pref.getLong("LAST_PERFORMANCE_VIEW_" + currentSessionUserId + "_" + projectId, 0);
+
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            // A. Todos Badge (Employee only)
+            int unreadTasks = db.taskDao().getUnreadTaskCount(projectId, currentSessionUsername);
+            
+            // B. Notices Badge
+            int newNotices = db.noticeDao().getNewNoticeCount(projectId, lastNoticeView);
+
+            // C. Requests Badge
+            int unreadRequests;
+            if (pref.getBoolean("IS_MANAGER_OF_" + projectId, false)) { // I'll set this flag in Spinner selection
+                unreadRequests = db.requestDao().getUnreadCountForManager(projectId, currentSessionUserId);
+            } else {
+                unreadRequests = db.requestDao().getUnreadCountForEmployee(projectId, currentSessionUserId);
+            }
+
+            // D. Performance Badge (Manager only)
+            int completedUpdates = 0;
+            if (pref.getBoolean("IS_MANAGER_OF_" + projectId, false)) {
+                completedUpdates = db.taskDao().getRecentlyCompletedCount(projectId, lastPerformanceView);
+            }
+
+            final boolean showTodo = unreadTasks > 0;
+            final boolean showNotice = newNotices > 0;
+            final boolean showRequest = unreadRequests > 0;
+            final boolean showPerformance = completedUpdates > 0;
+
+            runOnUiThread(() -> {
+                binding.badgeTodo.setVisibility(showTodo ? View.VISIBLE : View.GONE);
+                binding.badgeNotices.setVisibility(showNotice ? View.VISIBLE : View.GONE);
+                binding.badgeRequests.setVisibility(showRequest ? View.VISIBLE : View.GONE);
+                binding.badgePerformance.setVisibility(showPerformance ? View.VISIBLE : View.GONE);
+            });
+        });
+    }
+
     private void loadWorkspace() {
         AppDatabase db = AppDatabase.getInstance(this);
         AppDatabase.databaseWriteExecutor.execute(() -> {
@@ -75,19 +116,12 @@ public class MainActivity extends AppCompatActivity {
             List<Project> allProjects = db.projectDao().getAllProjects();
             List<Project> filteredProjects = new ArrayList<>();
 
-            // PROJECT FILTERING: Managers or Assigned Employees only
+            // PROJECT FILTERING: Managers or Enrolled Members only
             for (Project project : allProjects) {
                 if (currentSessionUserId == project.managerId) {
                     filteredProjects.add(project);
-                } else {
-                    // Check if assigned to any task in this project
-                    List<com.example.mytasks.Task> projectTasks = db.taskDao().getTasksByProject(project.id);
-                    for (com.example.mytasks.Task task : projectTasks) {
-                        if (task.assigneeId != null && task.assigneeId.contains(currentSessionUsername)) {
-                            filteredProjects.add(project);
-                            break;
-                        }
-                    }
+                } else if (project.projectRoster != null && project.projectRoster.contains(currentSessionUsername)) {
+                    filteredProjects.add(project);
                 }
             }
             
@@ -145,6 +179,8 @@ public class MainActivity extends AppCompatActivity {
                 Project selected = projectsList.get(position);
                 savedProjectSelectionId = selected.id;
 
+                SharedPreferences p = getSharedPreferences("UserSession", MODE_PRIVATE);
+                
                 // INJECT SYSTEM LOGS: Security Audit
                 Log.d("SECURITY_AUDIT", "Current Logged-in User ID: " + currentSessionUserId);
                 Log.d("SECURITY_AUDIT", "Selected Project Manager ID: " + selected.managerId);
@@ -152,6 +188,9 @@ public class MainActivity extends AppCompatActivity {
                 // ENFORCE STRICT VISIBILITY RE-EVALUATION
                 boolean isCurrentUserManager = (currentSessionUserId == selected.managerId);
                 Log.d("SECURITY_AUDIT", "Is User Manager? Answer: " + isCurrentUserManager);
+
+                p.edit().putBoolean("IS_MANAGER_OF_" + selected.id, isCurrentUserManager).apply();
+                updateNotificationBadges(selected.id);
 
                 if (isCurrentUserManager) {
                     // Active Manager Mode
@@ -204,6 +243,15 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        binding.btnLogoutEmpty.setOnClickListener(v -> {
+            SharedPreferences p = getSharedPreferences("UserSession", MODE_PRIVATE);
+            p.edit().clear().apply();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
+
         binding.todoOption.setOnClickListener(v -> {
             int selectedPosition = binding.projectSpinner.getSelectedItemPosition();
             if (selectedPosition != AdapterView.INVALID_POSITION && !projectsList.isEmpty()) {
@@ -220,7 +268,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.noticesOption.setOnClickListener(v -> {
-            Toast.makeText(this, "Notices Module Coming Soon", Toast.LENGTH_SHORT).show();
+            int selectedPosition = binding.projectSpinner.getSelectedItemPosition();
+            if (selectedPosition != AdapterView.INVALID_POSITION && !projectsList.isEmpty()) {
+                Project selected = projectsList.get(selectedPosition);
+                boolean isCurrentUserManager = (currentSessionUserId == selected.managerId);
+                Intent intent = new Intent(this, NoticeBoardActivity.class);
+                intent.putExtra("PROJECT_ID", selected.id);
+                intent.putExtra("IS_MANAGER", isCurrentUserManager);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Please select a project first", Toast.LENGTH_SHORT).show();
+            }
         });
 
         binding.dashboardOption.setOnClickListener(v -> {
@@ -247,12 +305,7 @@ public class MainActivity extends AppCompatActivity {
                 Project selected = projectsList.get(selectedPosition);
                 boolean isCurrentUserManager = (currentSessionUserId == selected.managerId);
                 
-                Intent intent;
-                if (isCurrentUserManager) {
-                    intent = new Intent(this, ManagerRequestsActivity.class);
-                } else {
-                    intent = new Intent(this, EmployeeRequestsActivity.class);
-                }
+                Intent intent = new Intent(this, RequestsActivity.class);
                 intent.putExtra("PROJECT_ID", selected.id);
                 intent.putExtra("IS_MANAGER", isCurrentUserManager);
                 startActivity(intent);

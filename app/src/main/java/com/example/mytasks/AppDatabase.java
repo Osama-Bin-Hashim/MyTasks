@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {User.class, Project.class, Task.class}, version = 5, exportSchema = false)
+@Database(entities = {User.class, Project.class, Task.class, Notice.class, Request.class}, version = 9, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile AppDatabase instance;
@@ -20,6 +20,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract TaskDao taskDao();
     public abstract ProjectDao projectDao();
+    public abstract NoticeDao noticeDao();
+    public abstract RequestDao requestDao();
 
     public static AppDatabase getInstance(final Context context) {
         if (instance == null) {

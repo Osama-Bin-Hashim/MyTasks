@@ -48,4 +48,13 @@ public interface TaskDao {
 
     @Query("SELECT COUNT(*) FROM tasks WHERE projectId = :projId AND assigneeId LIKE '%' || :username || '%' AND status = 'DONE'")
     int getEmployeeCompletedTaskCount(int projId, String username);
+
+    @Query("SELECT COUNT(*) FROM tasks WHERE projectId = :projectId AND assigneeId LIKE '%' || :username || '%' AND isRead = 0")
+    int getUnreadTaskCount(int projectId, String username);
+
+    @Query("SELECT COUNT(*) FROM tasks WHERE projectId = :projectId AND status = 'DONE' AND timeTakenMillis > :lastViewTimestamp")
+    int getRecentlyCompletedCount(int projectId, long lastViewTimestamp);
+
+    @Query("UPDATE tasks SET isRead = 1 WHERE projectId = :projectId AND assigneeId LIKE '%' || :username || '%'")
+    void markTasksAsRead(int projectId, String username);
 }

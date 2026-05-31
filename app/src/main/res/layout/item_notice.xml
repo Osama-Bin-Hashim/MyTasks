@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_16sdp"
+    android:layout_marginVertical="@dimen/_4sdp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="@dimen/_12sdp"
+    app:cardElevation="@dimen/_2sdp"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_16sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvNoticeItemTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/btnDeleteNotice"
+                android:text="Notice Title"
+                android:textColor="#333333"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btnDeleteNotice"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Delete Notice"
+                android:src="@android:drawable/ic_menu_delete"
+                android:visibility="gone"
+                app:tint="#FF4444" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvNoticeItemTimestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="May 28, 2026 10:00 AM"
+            android:textColor="#808080"
+            android:textSize="@dimen/_10ssp" />
+
+        <TextView
+            android:id="@+id/tvNoticeItemContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text="This is the announcement content detail text area."
+            android:textColor="#666666"
+            android:textSize="@dimen/_12ssp" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

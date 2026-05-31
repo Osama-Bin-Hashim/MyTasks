@@ -51,5 +51,15 @@
             android:textSize="@dimen/_18ssp"
             android:textStyle="bold" />
 
+        <ImageButton
+            android:id="@+id/btnRemoveMember"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_delete"
+            android:visibility="gone"
+            app:tint="@color/red" />
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
