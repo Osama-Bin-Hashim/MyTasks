@@ -79,10 +79,14 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
         }
 
         void bind(Request request, boolean isManager, int currentUserId, int managerId, OnRequestActionListener listener) {
-            tvType.setText(request.type.replace("_", " "));
-            tvStatus.setText(request.status);
-            tvSender.setText("From: " + request.senderName);
-            tvProject.setText("Project: " + request.projectName);
+            // Null-safe defaults for fallback strings
+            String sender = (request.senderName != null) ? request.senderName : "Unknown User";
+            String message = (request.messageText != null) ? request.messageText : "No message content";
+            
+            tvType.setText(request.type != null ? request.type.replace("_", " ") : "Request");
+            tvStatus.setText(request.status != null ? request.status : "PENDING");
+            tvSender.setText("From: " + sender);
+            tvProject.setText("Project: " + (request.projectName != null ? request.projectName : "General"));
 
             // POINT 2: Manager Message Styling
             if (request.senderId == managerId) {
@@ -102,7 +106,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.Reques
 
             if (request.messageText != null && !request.messageText.isEmpty()) {
                 tvMessage.setVisibility(View.VISIBLE);
-                tvMessage.setText(request.messageText);
+                tvMessage.setText(message);
             } else {
                 tvMessage.setVisibility(View.GONE);
             }

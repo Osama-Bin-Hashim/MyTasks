@@ -50,16 +50,16 @@ public class RequestsActivity extends AppCompatActivity implements RequestsAdapt
 
         loadProjectAndRequests();
 
-        if (isManager) {
-            binding.fabSendRequest.setVisibility(android.view.View.GONE);
-        } else {
-            binding.fabSendRequest.setOnClickListener(v -> showSendMessageDialog());
-        }
+        // UI VISIBILITY FIX: FAB must be visible for everyone, including Managers
+        binding.fabSendRequest.setVisibility(android.view.View.VISIBLE);
+        binding.fabSendRequest.setOnClickListener(v -> showSendMessageDialog());
     }
 
     private void setupRecyclerView() {
         if (currentProject == null) {
-            Log.e("RequestsActivity", "setupRecyclerView: currentProject is null, skipping setup.");
+            Log.e("REQ_ERROR", "setupRecyclerView: currentProject is null! Using fallback empty states.");
+            binding.tvEmptyRequests.setVisibility(View.VISIBLE);
+            binding.rvRequests.setVisibility(View.GONE);
             return;
         }
         adapter = new RequestsAdapter(isManager, currentUserId, currentProject.managerId, this);
@@ -72,20 +72,31 @@ public class RequestsActivity extends AppCompatActivity implements RequestsAdapt
         AppDatabase.databaseWriteExecutor.execute(() -> {
             currentProject = db.projectDao().getProjectById(projectId);
             runOnUiThread(() -> {
-                setupRecyclerView();
-                loadRequests();
+                if (currentProject != null) {
+                    setupRecyclerView();
+                    loadRequests();
+                } else {
+                    Log.e("REQ_ERROR", "Project data is null! Workspace ID: " + projectId);
+                    Toast.makeText(this, "Failed to load project context", Toast.LENGTH_SHORT).show();
+                    binding.tvEmptyRequests.setVisibility(View.VISIBLE);
+                    binding.tvEmptyRequests.setText("Error: Project not found");
+                }
             });
         });
     }
 
     private void loadRequests() {
+        if (currentProject == null) return;
+        
         AppDatabase db = AppDatabase.getInstance(this);
         AppDatabase.databaseWriteExecutor.execute(() -> {
             List<Request> allProjectRequests = db.requestDao().getRequestsByProject(projectId);
             List<Request> filteredRequests = new ArrayList<>();
+            
+            if (allProjectRequests == null) allProjectRequests = new ArrayList<>();
 
             for (Request req : allProjectRequests) {
-                // Rule A: Direct to Manager
+                // Point 2 & 3: Simplified logic with null safety
                 if ("DIRECT_TO_MANAGER".equals(req.type)) {
                     if (currentUserId == req.senderId || isManager) {
                         filteredRequests.add(req);
@@ -96,7 +107,6 @@ public class RequestsActivity extends AppCompatActivity implements RequestsAdapt
                         }
                     }
                 } 
-                // Rule B: Peer-to-Peer
                 else if ("PEER_TO_PEER".equals(req.type)) {
                     if (currentUserId == req.senderId || currentUserId == req.receiverId || isManager) {
                         filteredRequests.add(req);
@@ -107,7 +117,6 @@ public class RequestsActivity extends AppCompatActivity implements RequestsAdapt
                         }
                     }
                 }
-                // Legacy or Join Project
                 else {
                     if (isManager || currentUserId == req.senderId) {
                         filteredRequests.add(req);
@@ -145,22 +154,22 @@ public class RequestsActivity extends AppCompatActivity implements RequestsAdapt
         layout.setOrientation(android.widget.LinearLayout.VERTICAL);
         layout.setPadding(50, 40, 50, 10);
 
-        // Recipient Spinner
+        // Recipient Spinner - Corrected for Manager access
         Spinner spinner = new Spinner(this);
         List<String> roster = new ArrayList<>();
         
         if (!isManager) {
             roster.add("Project Manager");
         }
-
+        
         if (currentProject.projectRoster != null && !currentProject.projectRoster.isEmpty()) {
             String[] members = currentProject.projectRoster.split(", ");
             for (String member : members) {
-                if (!member.equals(currentUsername)) {
-                    roster.add(member);
-                }
+                roster.add(member); 
             }
         }
+        
+        Log.d("REQ_DEBUG", "Number of employees loaded for spinner: " + roster.size());
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, roster);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -189,6 +198,7 @@ public class RequestsActivity extends AppCompatActivity implements RequestsAdapt
     }
 
     private void sendRequest(String recipient, String message) {
+        Log.d("REQ_DEBUG", "Send clicked. Recipient: " + recipient + ", Manager Mode: " + isManager);
         AppDatabase db = AppDatabase.getInstance(this);
         AppDatabase.databaseWriteExecutor.execute(() -> {
             int receiverId;
@@ -200,7 +210,8 @@ public class RequestsActivity extends AppCompatActivity implements RequestsAdapt
             } else {
                 User user = db.userDao().getUserByUsername(recipient);
                 receiverId = (user != null) ? user.id : -1;
-                type = "PEER_TO_PEER";
+                // If Manager is sending to Employee, label it correctly
+                type = isManager ? "MANAGER_TO_EMPLOYEE" : "PEER_TO_PEER";
             }
 
             Request newRequest = new Request(
